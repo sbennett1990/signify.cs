@@ -27,16 +27,14 @@ namespace SignifyCS {
 		public static void Main(string[] args) {
 			try {
 				PubKey pub_key = checkPubFile();
-				Console.WriteLine();
 				Signature sig = checkSigFile();
-				Console.WriteLine();
 				byte[] message = getMessage();
 				bool success = Verify.VerifyMessage(pub_key, sig, message);
 
 				if (success) {
-					Console.WriteLine("Signature Verified");
+					Console.WriteLine("\nSignature Verified");
 				} else {
-					Console.WriteLine("signature verification failed");
+					Console.WriteLine("\nsignature verification failed");
 				}
 			} catch (Exception e) {
 				Console.WriteLine(e.Message);
@@ -61,14 +59,14 @@ namespace SignifyCS {
 					throw new Exception("Error reading public key file");
 				}
 			}
-
+#if DEBUG
 			Console.WriteLine($"Untrusted Comment: {comment}");
 			Console.Write("Base64 Key Num: ");
 			Array.ForEach(pub_key.KeyNum, x => Console.Write($"{x:x2}"));
 			Console.Write("\nBase64 PubKey Data: ");
 			Array.ForEach(pub_key.PubKeyData, x => Console.Write($"{x:x2}"));
 			Console.WriteLine();
-
+#endif
 			return pub_key;
 		}
 
@@ -85,14 +83,14 @@ namespace SignifyCS {
 					throw new Exception("Error reading signature file");
 				}
 			}
-
+#if DEBUG
 			Console.WriteLine($"Untrusted Comment: {comment}");
 			Console.Write("Base64 Key Num: ");
 			Array.ForEach(sig.KeyNum, x => Console.Write($"{x:x2}"));
 			Console.Write("\nBase64 Sig Data: ");
 			Array.ForEach(sig.SigData, x => Console.Write($"{x:x2}"));
 			Console.WriteLine();
-
+#endif
 			return sig;
 		}
 
