@@ -5,7 +5,7 @@ not implement key generation or signing functionalities.
 
 ## Dependencies
 
-* .NET 4.5.2 or later
+* .NET Framework 4.5.2 or later
 * Visual Studio 2015 or later
 
 ## License
