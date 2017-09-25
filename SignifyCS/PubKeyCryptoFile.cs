@@ -59,11 +59,10 @@ namespace SignifyCS {
 		}
 
 		/// <summary>
-		///
+		/// Check and parse the public key data in the pub key file.
 		/// </summary>
-		/// <param name="pub_key_line"></param>
-		/// <param name="pub_key"></param>
-		/// <returns></returns>
+		/// <param name="pub_key_line">The public key line (full line of text from the file) to check</param>
+		/// <returns>A PubKey struct containing the decoded data from the file</returns>
 		public static PubKey CheckPubKey(string pub_key_line) {
 			if (string.IsNullOrEmpty(pub_key_line)) {
 				throw new ArgumentNullException(nameof(pub_key_line));

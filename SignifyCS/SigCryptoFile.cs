@@ -59,11 +59,10 @@ namespace SignifyCS {
 		}
 
 		/// <summary>
-		///
+		/// Check and parse the signature data in the sig file.
 		/// </summary>
-		/// <param name="sig_line"></param>
-		/// <param name="sig"></param>
-		/// <returns></returns>
+		/// <param name="sig_line">The signature line (full line of text from the file) to check</param>
+		/// <returns>A Signature struct containing the decoded data from the file</returns>
 		public static Signature CheckSig(string sig_line) {
 			if (string.IsNullOrEmpty(sig_line)) {
 				throw new ArgumentNullException(nameof(sig_line));
