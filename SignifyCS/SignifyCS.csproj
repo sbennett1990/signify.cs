@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseCryptoFile.cs" />
+    <Compile Include="CryptoBytes.cs" />
     <Compile Include="PubKeyCryptoFile.cs" />
     <Compile Include="SigCryptoFile.cs" />
     <Compile Include="Main.cs" />
