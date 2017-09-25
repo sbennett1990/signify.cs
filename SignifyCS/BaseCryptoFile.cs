@@ -62,13 +62,9 @@ namespace SignifyCS {
 			return comment_line.Remove(index, COMMENT_HEADER.Length);
 		}
 
-		/// <summary>
-		///
-		/// </summary>
-		/// <param name="sig_line"></param>
-		/// <param name="sig"></param>
-		/// <returns></returns>
 		public static int CheckKeyData(string sig_line, FileType file_type) {
+			// TODO: I'd like to make this generic, since pub/sec keys and signature files are pretty similar
+			throw new NotImplementedException();
 			//sig = new Sig();
 
 			if (sig_line.Length <= 1)
