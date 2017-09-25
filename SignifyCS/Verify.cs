@@ -15,7 +15,6 @@
  */
 
 using System;
-using System.Collections;
 
 using Sodium;
 
@@ -37,8 +36,7 @@ namespace SignifyCS {
 		}
 
 		public static void CheckKeys(PubKey pub_key, Signature sig) {
-			IStructuralEquatable sig_key_num = sig.KeyNum;
-			if (!sig_key_num.Equals(pub_key.KeyNum, StructuralComparisons.StructuralEqualityComparer)) {
+			if (!CryptoBytes.ConstantTimeEquals(pub_key.KeyNum, sig.KeyNum)) {
 				throw new Exception("verification failed: checked against wrong key");
 			}
 		}
