@@ -46,18 +46,21 @@ namespace SignifyCS {
 		/// <param name="comment_line">The comment string (full line of text from the file) to check</param>
 		/// <returns>The untrusted comment string from the file, minus the header text</returns>
 		public static string CheckComment(string comment_line) {
-			if (string.IsNullOrEmpty(comment_line))
+			if (string.IsNullOrEmpty(comment_line)) {
 				throw new ArgumentNullException(nameof(comment_line));
-
-			if (comment_line.Length < COMMENT_HEADER.Length)
+			}
+			if (comment_line.Length < COMMENT_HEADER.Length) {
 				throw new Exception($"invalid comment line; must start with '{COMMENT_HEADER}'");
+			}
 
 			int index = comment_line.IndexOf(COMMENT_HEADER);
-			if (index != 0)
+			if (index != 0) {
 				throw new Exception($"invalid comment line; must start with '{COMMENT_HEADER}'");
+			}
 
-			if (comment_line.Length > (COMMENT_HEADER.Length + COMMENT_MAX_LEN))
+			if (comment_line.Length > (COMMENT_HEADER.Length + COMMENT_MAX_LEN)) {
 				throw new Exception("comment too long");
+			}
 
 			return comment_line.Remove(index, COMMENT_HEADER.Length);
 		}

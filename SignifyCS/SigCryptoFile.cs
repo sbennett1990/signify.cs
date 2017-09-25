@@ -65,21 +65,24 @@ namespace SignifyCS {
 		/// <param name="sig"></param>
 		/// <returns></returns>
 		public static Signature CheckSig(string sig_line) {
-			if (string.IsNullOrEmpty(sig_line))
+			if (string.IsNullOrEmpty(sig_line)) {
 				throw new ArgumentNullException(nameof(sig_line));
-
-			if (sig_line.Length <= 1)
+			}
+			if (sig_line.Length <= 1) {
 				throw new Exception("invalid base64 encoding in signature file");
+			}
 
 			Signature sig = new Signature();
 			byte[] data = Convert.FromBase64String(sig_line);
 
-			if (data.Length != (BaseCryptoFile.PK_ALGORITHM.Length + BaseCryptoFile.KEY_NUM_LEN + SIG_DATA_LEN))
+			if (data.Length != (BaseCryptoFile.PK_ALGORITHM.Length + BaseCryptoFile.KEY_NUM_LEN + SIG_DATA_LEN)) {
 				throw new Exception("invalid base64 encoding in signature file");
+			}
 
 			string algorithm = Encoding.UTF8.GetString(data, 0, BaseCryptoFile.PK_ALGORITHM.Length);
-			if (!string.Equals(algorithm, BaseCryptoFile.PK_ALGORITHM))
+			if (!string.Equals(algorithm, BaseCryptoFile.PK_ALGORITHM)) {
 				throw new Exception("unsupported signature");
+			}
 			sig.Algorithm = algorithm;
 
 			byte[] key_num = new byte[BaseCryptoFile.KEY_NUM_LEN];

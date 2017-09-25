@@ -65,21 +65,24 @@ namespace SignifyCS {
 		/// <param name="pub_key"></param>
 		/// <returns></returns>
 		public static PubKey CheckPubKey(string pub_key_line) {
-			if (string.IsNullOrEmpty(pub_key_line))
+			if (string.IsNullOrEmpty(pub_key_line)) {
 				throw new ArgumentNullException(nameof(pub_key_line));
-
-			if (pub_key_line.Length <= 1)
+			}
+			if (pub_key_line.Length <= 1) {
 				throw new Exception("invalid base64 encoding in pub key");
+			}
 
 			PubKey pub_key = new PubKey();
 			byte[] data = Convert.FromBase64String(pub_key_line);
 
-			if (data.Length != (BaseCryptoFile.PK_ALGORITHM.Length + BaseCryptoFile.KEY_NUM_LEN + PUB_KEY_DATA_LEN))
+			if (data.Length != (BaseCryptoFile.PK_ALGORITHM.Length + BaseCryptoFile.KEY_NUM_LEN + PUB_KEY_DATA_LEN)) {
 				throw new Exception("invalid base64 encoding in pub key");
+			}
 
 			string algorithm = Encoding.UTF8.GetString(data, 0, BaseCryptoFile.PK_ALGORITHM.Length);
-			if (!string.Equals(algorithm, BaseCryptoFile.PK_ALGORITHM))
+			if (!string.Equals(algorithm, BaseCryptoFile.PK_ALGORITHM)) {
 				throw new Exception("unsupported pub key");
+			}
 			pub_key.Algorithm = algorithm;
 
 			byte[] key_num = new byte[BaseCryptoFile.KEY_NUM_LEN];
