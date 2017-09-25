@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseCryptoFileTests.cs" />
+    <Compile Include="CryptoBytesTests.cs" />
     <Compile Include="SigCryptoFileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -22,9 +22,9 @@ namespace SignifyCS {
 		/// <param name="y">A byte array</param>
 		/// <returns>True if arrays are equal; false otherwise</returns>
 		public static bool ConstantTimeEquals(byte[] x, byte[] y) {
-			//Contract.Requires<ArgumentNullException>(x != null && y != null);
-			Trace.Assert(x != null && y != null);
-
+			if (x == null || y == null) {
+				throw new ArgumentNullException("can't compare a null array");
+			}
 			if (x.Length != y.Length) {
 				return false;
 			}
@@ -44,8 +44,9 @@ namespace SignifyCS {
 		/// </summary>
 		/// <param name="data">A byte array</param>
 		public static void Wipe(byte[] data) {
-			//Contract.Requires<ArgumentNullException>(data != null);
-			Trace.Assert(data != null);
+			if (data == null) {
+				throw new ArgumentNullException("can't wipe a null array");
+			}
 			internalWipe(data, 0, data.Length);
 		}
 
