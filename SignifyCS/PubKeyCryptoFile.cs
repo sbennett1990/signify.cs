@@ -22,40 +22,40 @@ namespace SignifyCS {
 	public class PubKeyCryptoFile {
 		private const uint PUB_KEY_DATA_LEN = BaseCryptoFile.crypto_sign_ed25519_PUBLICKEYBYTES;
 
-		public static int ParsePubKeyFile(FileStream file) {
-			PubKey pub_key;
-			return ParsePubKeyFile(file, out pub_key);
-		}
-
-		public static int ParsePubKeyFile(FileStream file, out PubKey pub_key) {
+		public static PubKey ParsePubKeyFile(FileStream file) {
 			string comment;
-			return ParsePubKeyFile(file, out pub_key, out comment);
+			return ParsePubKeyFile(file, out comment);
 		}
 
-		public static int ParsePubKeyFile(FileStream file, out PubKey pub_key, out string comment) {
-			pub_key = default(PubKey);
+		public static PubKey ParsePubKeyFile(FileStream file, out string comment) {
+			if (file == null) {
+				throw new ArgumentNullException(nameof(file));
+			}
+			if (!file.CanRead) {
+				throw new Exception("can't read pub key");
+			}
+
+			PubKey pub_key;
 			comment = string.Empty;
-
-			if (file == null || !file.CanRead)
-				return -1;
-
 			using (StreamReader reader = new StreamReader(file, Encoding.UTF8)) {
 				/* check comment line */
-				if (reader.Peek() == -1)
-					return -1;
+				if (reader.Peek() == -1) {
+					throw new Exception("empty pub key file");
+				}
 
 				string comment_line = reader.ReadLine();
 				comment = BaseCryptoFile.CheckComment(comment_line);
 
 				/* check public key line */
-				if (reader.Peek() == -1)
-					return -1;
+				if (reader.Peek() == -1) {
+					throw new Exception("missing public key data");
+				}
 
 				string pub_key_line = reader.ReadLine();
 				pub_key = CheckPubKey(pub_key_line);
 			}
 
-			return 1;
+			return pub_key;
 		}
 
 		/// <summary>

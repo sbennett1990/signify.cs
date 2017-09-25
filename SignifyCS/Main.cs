@@ -26,8 +26,8 @@ namespace SignifyCS {
 	public class Signify {
 		public static void Main(string[] args) {
 			try {
-				PubKey pub_key = checkPubFile();
-				Signature sig = checkSigFile();
+				PubKey pub_key = getPubFile();
+				Signature sig = getSigFile();
 				byte[] message = getMessage();
 				bool success = Verify.VerifyMessage(pub_key, sig, message);
 
@@ -46,18 +46,14 @@ namespace SignifyCS {
 			Console.WriteLine();
 		}
 
-		private static PubKey checkPubFile() {
+		private static PubKey getPubFile() {
 			Console.Write("Public Key: ");
 			string file_name = Console.ReadLine().Trim();
 
 			PubKey pub_key;
 			string comment;
 			using (FileStream pub_key_file = readFile(file_name)) {
-				if (PubKeyCryptoFile.ParsePubKeyFile(pub_key_file, out pub_key, out comment) < 0
-					|| pub_key.KeyNum == null
-					|| pub_key.PubKeyData == null) {
-					throw new Exception("Error reading public key file");
-				}
+				pub_key = PubKeyCryptoFile.ParsePubKeyFile(pub_key_file, out comment);
 			}
 #if DEBUG
 			Console.WriteLine($"Untrusted Comment: {comment}");
@@ -70,18 +66,14 @@ namespace SignifyCS {
 			return pub_key;
 		}
 
-		private static Signature checkSigFile() {
+		private static Signature getSigFile() {
 			Console.Write("Signature File: ");
 			string file_name = Console.ReadLine().Trim();
 
 			Signature sig;
 			string comment;
 			using (FileStream sig_file = readFile(file_name)) {
-				if (SigCryptoFile.ParseSigFile(sig_file, out sig, out comment) < 0
-					|| sig.KeyNum == null
-					|| sig.SigData == null) {
-					throw new Exception("Error reading signature file");
-				}
+				sig = SigCryptoFile.ParseSigFile(sig_file, out comment);
 			}
 #if DEBUG
 			Console.WriteLine($"Untrusted Comment: {comment}");
