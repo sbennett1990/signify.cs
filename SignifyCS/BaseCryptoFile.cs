@@ -30,6 +30,10 @@ namespace SignifyCS {
 		public byte[] SigData;
 	}
 
+	/// <summary>
+	/// Provides some common functionality for dealing with signify(1) crypto files
+	/// (pub/sec keys and signatures).
+	/// </summary>
 	public class BaseCryptoFile {
 		public const uint crypto_sign_ed25519_BYTES = 64;
 		public const uint crypto_sign_ed25519_PUBLICKEYBYTES = 32;
@@ -57,7 +61,6 @@ namespace SignifyCS {
 			if (index != 0) {
 				throw new Exception($"invalid comment line; must start with '{COMMENT_HEADER}'");
 			}
-
 			if (comment_line.Length > (COMMENT_HEADER.Length + COMMENT_MAX_LEN)) {
 				throw new Exception("comment too long");
 			}

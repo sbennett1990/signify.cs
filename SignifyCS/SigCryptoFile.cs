@@ -19,14 +19,28 @@ using System.IO;
 using System.Text;
 
 namespace SignifyCS {
+	/// <summary>
+	/// Functions for cheacking and parsing signature files.
+	/// </summary>
 	public class SigCryptoFile {
 		private const uint SIG_DATA_LEN = BaseCryptoFile.crypto_sign_ed25519_BYTES;
 
+		/// <summary>
+		/// Parse a signature file.
+		/// </summary>
+		/// <param name="file">The stream of the signature to parse</param>
+		/// <returns>A Signature struct containing the decoded data from the file</returns>
 		public static Signature ParseSigFile(FileStream file) {
 			string comment;
 			return ParseSigFile(file, out comment);
 		}
 
+		/// <summary>
+		/// Parse a signature file, and give the comment.
+		/// </summary>
+		/// <param name="file">The stream of the signature to parse</param>
+		/// <param name="comment">The untrusted comment in the file</param>
+		/// <returns>A Signature struct containing the decoded data from the file</returns>
 		public static Signature ParseSigFile(FileStream file, out string comment) {
 			if (file == null) {
 				throw new ArgumentNullException(nameof(file));
@@ -62,7 +76,7 @@ namespace SignifyCS {
 		/// Check and parse the signature data in the sig file.
 		/// </summary>
 		/// <param name="sig_line">The signature line (full line of text from the file) to check</param>
-		/// <returns>A Signature struct containing the decoded data from the file</returns>
+		/// <returns>A Signature struct containing the decoded data from the line</returns>
 		public static Signature CheckSig(string sig_line) {
 			if (string.IsNullOrEmpty(sig_line)) {
 				throw new ArgumentNullException(nameof(sig_line));

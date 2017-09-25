@@ -19,14 +19,28 @@ using System.IO;
 using System.Text;
 
 namespace SignifyCS {
+	/// <summary>
+	/// Functions for cheacking and parsing public key files.
+	/// </summary>
 	public class PubKeyCryptoFile {
 		private const uint PUB_KEY_DATA_LEN = BaseCryptoFile.crypto_sign_ed25519_PUBLICKEYBYTES;
 
+		/// <summary>
+		/// Parse a public key file.
+		/// </summary>
+		/// <param name="file">The stream of the pub key to parse</param>
+		/// <returns>A PubKey struct containing the decoded data from the file</returns>
 		public static PubKey ParsePubKeyFile(FileStream file) {
 			string comment;
 			return ParsePubKeyFile(file, out comment);
 		}
 
+		/// <summary>
+		/// Parse a public key file, and give the comment.
+		/// </summary>
+		/// <param name="file">The stream of the pub key to parse</param>
+		/// <param name="comment">The untrusted comment in the file</param>
+		/// <returns>A PubKey struct containing the decoded data from the file</returns>
 		public static PubKey ParsePubKeyFile(FileStream file, out string comment) {
 			if (file == null) {
 				throw new ArgumentNullException(nameof(file));
@@ -62,7 +76,7 @@ namespace SignifyCS {
 		/// Check and parse the public key data in the pub key file.
 		/// </summary>
 		/// <param name="pub_key_line">The public key line (full line of text from the file) to check</param>
-		/// <returns>A PubKey struct containing the decoded data from the file</returns>
+		/// <returns>A PubKey struct containing the decoded data from the line</returns>
 		public static PubKey CheckPubKey(string pub_key_line) {
 			if (string.IsNullOrEmpty(pub_key_line)) {
 				throw new ArgumentNullException(nameof(pub_key_line));
