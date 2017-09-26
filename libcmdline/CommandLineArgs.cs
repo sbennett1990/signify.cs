@@ -115,17 +115,6 @@ namespace libcmdline {
 			}
 		}
 
-		public string this[string key] {
-			get {
-				if (containsSwitch(key)) {
-					return arguments[key];
-				}
-				else {
-					return null;
-				}
-			}
-		}
-
 		/// <summary>
 		///
 		/// </summary>
@@ -141,32 +130,6 @@ namespace libcmdline {
 			else {
 				handlers.Add(switchName, handler);
 			}
-		}
-
-		/// <summary>
-		///
-		/// </summary>
-		/// <param name="switchName"></param>
-		/// <returns></returns>
-		public bool containsSwitch(string switchName) {
-			foreach (string pattern in prefixRegexPatternList) {
-				if (Regex.IsMatch(switchName, pattern, RegexOptions.Compiled)) {
-					switchName = Regex.Replace(switchName, pattern, "", RegexOptions.Compiled);
-				}
-			}
-
-			if (ignoreCase) {
-				foreach (string key in arguments.Keys) {
-					if (key.ToLower() == switchName.ToLower()) {
-						return true;
-					}
-				}
-			}
-			else {
-				return arguments.ContainsKey(switchName);
-			}
-
-			return false;
 		}
 
 		/// <summary>
