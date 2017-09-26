@@ -67,8 +67,6 @@ namespace SignifyCS {
 				Console.WriteLine(e.StackTrace);
 #endif
 			}
-
-			Console.WriteLine();
 		}
 
 		private static FileStream readFile(string file_name) {
