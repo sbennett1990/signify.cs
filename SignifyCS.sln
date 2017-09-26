@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignifyCS", "SignifyCS\Sign
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{97A52141-0063-4277-9272-FFDD0AD2EE01}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libcmdline", "libcmdline\libcmdline.csproj", "{D9E551BC-CA12-4A73-BE60-0F105BC76FA6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{97A52141-0063-4277-9272-FFDD0AD2EE01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97A52141-0063-4277-9272-FFDD0AD2EE01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97A52141-0063-4277-9272-FFDD0AD2EE01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9E551BC-CA12-4A73-BE60-0F105BC76FA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9E551BC-CA12-4A73-BE60-0F105BC76FA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9E551BC-CA12-4A73-BE60-0F105BC76FA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9E551BC-CA12-4A73-BE60-0F105BC76FA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
