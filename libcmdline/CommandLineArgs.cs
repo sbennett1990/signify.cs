@@ -66,7 +66,8 @@ namespace libcmdline {
 		public event EventHandler<CommandLineArgsMatchEventArgs> SwitchMatch;
 
 		/// <summary>
-		/// Create a new command line argument processor.
+		/// Create a new command line argument processor with default command line switch
+		/// prefixes.
 		/// </summary>
 		public CommandLineArgs() {
 			prefixRegexPatternList = new List<string>();
@@ -74,6 +75,9 @@ namespace libcmdline {
 			arguments = new Dictionary<string, string>();
 			handlers = new Dictionary<string, EventHandler<CommandLineArgsMatchEventArgs>>();
 			ignoreCase = false;
+
+			prefixRegexPatternList.Add("/{1}");
+			prefixRegexPatternList.Add("-{1}");
 		}
 
 		/// <summary>

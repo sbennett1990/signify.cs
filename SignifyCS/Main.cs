@@ -32,7 +32,6 @@ namespace SignifyCS {
 
 			try {
 				CommandLineArgs cmd_args = new CommandLineArgs();
-				cmd_args.PrefixRegexPatternList.Add("-{1}");
 
 				cmd_args.RegisterSpecificSwitchMatchHandler("p", (sender, e) => {
 					using (FileStream pub_key_file = readFile(e.Value)) {
