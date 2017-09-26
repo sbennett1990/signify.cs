@@ -1,17 +1,17 @@
 ﻿/*
  * Copyright (c) 2015 Scott Bennett
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- * 
+ *	 list of conditions and the following disclaimer.
+ *
  * * Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- * 
+ *	 this list of conditions and the following disclaimer in the documentation
+ *	 and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -26,19 +26,17 @@
 
 using System;
 
-namespace libcmdline
-{
+namespace libcmdline {
 	/// <summary>
-	/// Container for a command line switch and its value. 
+	/// Container for a command line switch and its value.
 	/// </summary>
-	public class CommandLineArgsMatchEventArgs : EventArgs
-	{
+	public class CommandLineArgsMatchEventArgs : EventArgs {
 		string @switch;
 		string value;
 		bool isValidSwitch = true;
 
 		/// <summary>
-		/// The command line switch. 
+		/// The command line switch.
 		/// </summary>
 		public string Switch {
 			get {
@@ -47,7 +45,7 @@ namespace libcmdline
 		}
 
 		/// <summary>
-		/// The value given with the command line switch. 
+		/// The value given with the command line switch.
 		/// </summary>
 		public string Value {
 			get {
@@ -56,7 +54,7 @@ namespace libcmdline
 		}
 
 		/// <summary>
-		/// Was this switch valid? 
+		/// Was this switch valid?
 		/// </summary>
 		public bool IsValidSwitch {
 			get {
@@ -65,7 +63,7 @@ namespace libcmdline
 		}
 
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		/// <param name="switch"></param>
 		/// <param name="value"></param>
@@ -74,7 +72,7 @@ namespace libcmdline
 		}
 
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		/// <param name="switch"></param>
 		/// <param name="value"></param>

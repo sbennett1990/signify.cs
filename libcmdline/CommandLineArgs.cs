@@ -1,17 +1,17 @@
-﻿/* 
+﻿/*
  * Copyright (c) 2015 Scott Bennett
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
- * 
+ *	 list of conditions and the following disclaimer.
+ *
  * * Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation
- *   and/or other materials provided with the distribution.
- * 
+ *	 this list of conditions and the following disclaimer in the documentation
+ *	 and/or other materials provided with the distribution.
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -28,48 +28,56 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace libcmdline
-{
+namespace libcmdline {
 	/// <summary>
-	/// Command line arguments processor. 
+	/// Command line arguments processor.
 	/// </summary>
 	/// <example>
 	/// <code>
 	/// static class Program {
-    ///		static void Main(string[] args) {
-    ///			CommandLineArgs cmdArgs = new CommandLineArgs();
-    ///			cmdArgs.IgnoreCase = true;
-    ///			cmdArgs.PrefixRegexPatternList.Add("/{1}");
-    ///			cmdArgs.PrefixRegexPatternList.Add("-{1,2}");
-    ///			cmdArgs.RegisterSpecificSwitchMatchHandler("foo", (sender, e) => {
-    ///				// handle the /foo -foo or --foo switch logic here.
-    ///				// this method will only be called for the foo switch.
+	///		static void Main(string[] args) {
+	///			CommandLineArgs cmdArgs = new CommandLineArgs();
+	///			cmdArgs.IgnoreCase = true;
+	///			cmdArgs.PrefixRegexPatternList.Add("/{1}");
+	///			cmdArgs.PrefixRegexPatternList.Add("-{1,2}");
+	///			cmdArgs.RegisterSpecificSwitchMatchHandler("foo", (sender, e) => {
+	///				// handle the /foo -foo or --foo switch logic here.
+	///				// this method will only be called for the foo switch.
 	///				// get the value given with the switch with e.Value
-    ///			});
-    ///			cmdArgs.ProcessCommandLineArgs(args);
-    ///		}
+	///			});
+	///			cmdArgs.ProcessCommandLineArgs(args);
+	///		}
 	/// }
 	/// </code>
 	/// </example>
 	/// <remarks>
 	/// See http://sanity-free.org/144/csharp_command_line_args_processing_class.html for more information.
 	/// </remarks>
-	public class CommandLineArgs
-	{
+	public class CommandLineArgs {
 		public const string InvalidSwitchIdentifier = "INVALID";
 
-		bool ignoreCase = false;
+		private IList<string> prefixRegexPatternList;
+		private IList<string> invalidArgs;
+		private IDictionary<string, string> arguments;
+		private IDictionary<string, EventHandler<CommandLineArgsMatchEventArgs>> handlers;
 
-		IList<string> prefixRegexPatternList = new List<string>();
-		List<string> invalidArgs = new List<string>();
-		Dictionary<string, string> arguments = new Dictionary<string, string>();
-		Dictionary<string, EventHandler<CommandLineArgsMatchEventArgs>> handlers = 
-			new Dictionary<string, EventHandler<CommandLineArgsMatchEventArgs>>();
-		
+		private bool ignoreCase;
+
 		public event EventHandler<CommandLineArgsMatchEventArgs> SwitchMatch;
 
 		/// <summary>
-		/// Get the number of arguments given at the command line. 
+		/// Create a new command line argument processor.
+		/// </summary>
+		public CommandLineArgs() {
+			prefixRegexPatternList = new List<string>();
+			invalidArgs = new List<string>();
+			arguments = new Dictionary<string, string>();
+			handlers = new Dictionary<string, EventHandler<CommandLineArgsMatchEventArgs>>();
+			ignoreCase = false;
+		}
+
+		/// <summary>
+		/// The number of arguments given on the command line.
 		/// </summary>
 		public int ArgCount {
 			get {
@@ -77,6 +85,9 @@ namespace libcmdline
 			}
 		}
 
+		/// <summary>
+		///
+		/// </summary>
 		public IList<string> PrefixRegexPatternList {
 			get {
 				return prefixRegexPatternList;
@@ -84,12 +95,7 @@ namespace libcmdline
 		}
 
 		/// <summary>
-		/// <para>
-		/// Ignore the case of the command line switches. 
-		/// </para>
-		/// <para>
-		/// Default = true 
-		/// </para>
+		/// Ignore the case of the command line switches. Default is false.
 		/// </summary>
 		public bool IgnoreCase {
 			get {
@@ -101,11 +107,11 @@ namespace libcmdline
 		}
 
 		/// <summary>
-		/// Get an array of all the invalid arguments given. 
+		/// List of all the invalid arguments given.
 		/// </summary>
-		public string[] InvalidArgs {
+		public IList<string> InvalidArgs {
 			get {
-				return invalidArgs.ToArray();
+				return invalidArgs;
 			}
 		}
 
@@ -121,12 +127,12 @@ namespace libcmdline
 		}
 
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		/// <param name="switchName"></param>
 		/// <param name="handler"></param>
 		public void registerSpecificSwitchMatchHandler(
-			string switchName, 
+			string switchName,
 			EventHandler<CommandLineArgsMatchEventArgs> handler
 		) {
 			if (handlers.ContainsKey(switchName)) {
@@ -138,7 +144,7 @@ namespace libcmdline
 		}
 
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		/// <param name="switchName"></param>
 		/// <returns></returns>
@@ -164,7 +170,7 @@ namespace libcmdline
 		}
 
 		/// <summary>
-		/// Take the command line arguments and attempt to execute the handlers. 
+		/// Take the command line arguments and attempt to execute the handlers.
 		/// </summary>
 		/// <param name="args">The arguments array</param>
 		public void processCommandLineArgs(string[] args) {
@@ -211,8 +217,8 @@ namespace libcmdline
 		}
 
 		/// <summary>
-		/// Invoke the registered handler for the provided switch and value 
-		/// (in the form of a CommandLineArgsMatchEventArgs object). 
+		/// Invoke the registered handler for the provided switch and value
+		/// (in the form of a CommandLineArgsMatchEventArgs object).
 		/// </summary>
 		/// <param name="e"></param>
 		protected virtual void onSwitchMatch(CommandLineArgsMatchEventArgs e) {
