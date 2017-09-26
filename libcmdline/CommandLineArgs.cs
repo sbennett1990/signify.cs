@@ -148,13 +148,17 @@ namespace libcmdline {
 					string optionPattern = string.Format("^{0}", prefix);
 
 					if (!Regex.IsMatch(option, optionPattern, RegexOptions.Compiled)) {
-						/* invalid argument */
-						onSwitchMatch(new CommandLineArgsMatchEventArgs(InvalidSwitchIdentifier, option, false));
-						invalidArgs.Add(option);
 						continue;
 					}
 
 					string arg = Regex.Replace(option, optionPattern, "", RegexOptions.Compiled);
+
+					if (!handlers.ContainsKey(arg)) {
+						/* invalid argument */
+						onSwitchMatch(new CommandLineArgsMatchEventArgs(InvalidSwitchIdentifier, arg, false));
+						invalidArgs.Add(arg);
+						continue;
+					}
 
 					if (arg.Contains("=")) {
 						/* switch style: "<prefix>Param=Value" */
