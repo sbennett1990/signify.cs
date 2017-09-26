@@ -1,4 +1,4 @@
-# SignifyCS - A signify(1) compatible tool written in C#
+# SignifyCS - A signify(1)-like tool written in C#
 
 SignifyCS is capable of verifying files (messages) signed with signify(1). At
 this time, it can't verify files signed with the embedded (-e) flag, nor gzip
