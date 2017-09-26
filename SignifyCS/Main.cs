@@ -19,11 +19,6 @@ using System.IO;
 using libcmdline;
 
 namespace SignifyCS {
-	public enum FileType {
-		Signiture,
-		PublicKey
-	};
-
 	public class Signify {
 		public static void Main(string[] args) {
 			PubKey pub_key = default(PubKey);
