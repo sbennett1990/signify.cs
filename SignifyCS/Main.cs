@@ -16,6 +16,7 @@
 
 using System;
 using System.IO;
+using libcmdline;
 
 namespace SignifyCS {
 	public enum FileType {
@@ -25,10 +26,30 @@ namespace SignifyCS {
 
 	public class Signify {
 		public static void Main(string[] args) {
+			PubKey pub_key = default(PubKey);
+			Signature sig = default(Signature);
+			byte[] message = new byte[0];
+
 			try {
-				PubKey pub_key = getPubFile();
-				Signature sig = getSigFile();
-				byte[] message = getMessage();
+				CommandLineArgs cmd_args = new CommandLineArgs();
+				cmd_args.PrefixRegexPatternList.Add("-{1}");
+
+				cmd_args.registerSpecificSwitchMatchHandler("p", (sender, e) => {
+					pub_key = readPubFile(e.Value);
+				});
+				cmd_args.registerSpecificSwitchMatchHandler("x", (sender, e) => {
+					sig = readSigFile(e.Value);
+				});
+				cmd_args.registerSpecificSwitchMatchHandler("m", (sender, e) => {
+					message = File.ReadAllBytes(e.Value);
+				});
+
+				cmd_args.processCommandLineArgs(args);
+				if (cmd_args.ArgCount < 3) {
+					Console.WriteLine("usage: signify -p pubkey -x sigfile -m message");
+					throw new Exception();
+				}
+
 				bool success = Verify.VerifyMessage(pub_key, sig, message);
 
 				if (success) {
@@ -46,10 +67,7 @@ namespace SignifyCS {
 			Console.WriteLine();
 		}
 
-		private static PubKey getPubFile() {
-			Console.Write("Public Key: ");
-			string file_name = Console.ReadLine().Trim();
-
+		private static PubKey readPubFile(string file_name) {
 			PubKey pub_key;
 			string comment;
 			using (FileStream pub_key_file = readFile(file_name)) {
@@ -66,10 +84,7 @@ namespace SignifyCS {
 			return pub_key;
 		}
 
-		private static Signature getSigFile() {
-			Console.Write("Signature File: ");
-			string file_name = Console.ReadLine().Trim();
-
+		private static Signature readSigFile(string file_name) {
 			Signature sig;
 			string comment;
 			using (FileStream sig_file = readFile(file_name)) {
