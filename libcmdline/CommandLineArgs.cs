@@ -142,45 +142,73 @@ namespace libcmdline {
 		/// <param name="args">The arguments array</param>
 		public void ProcessCommandLineArgs(string[] args) {
 			for (int i = 0; i < args.Length; i++) {
-				string cmdLineValue = ignoreCase ? args[i].ToLower() : args[i];
+				string option = ignoreCase ? args[i].ToLower() : args[i];
 
 				foreach (string prefix in prefixRegexPatternList) {
-					string switchPattern = string.Format("^{0}", prefix);
+					string optionPattern = string.Format("^{0}", prefix);
 
-					if (Regex.IsMatch(cmdLineValue, switchPattern, RegexOptions.Compiled)) {
-						cmdLineValue = Regex.Replace(cmdLineValue, switchPattern, "", RegexOptions.Compiled);
+					if (!Regex.IsMatch(option, optionPattern, RegexOptions.Compiled)) {
+						/* invalid argument */
+						onSwitchMatch(new CommandLineArgsMatchEventArgs(InvalidSwitchIdentifier, option, false));
+						invalidArgs.Add(option);
+						continue;
+					}
 
-						if (cmdLineValue.Contains("=")) {
-							/* switch style: "<prefix>Param=Value" */
-							int idx = cmdLineValue.IndexOf('=');
-							string n = cmdLineValue.Substring(0, idx);
-							string v = cmdLineValue.Substring(idx + 1, cmdLineValue.Length - n.Length - 1);
-							onSwitchMatch(new CommandLineArgsMatchEventArgs(n, v));
-							arguments.Add(n, v);
-						}
-						else {
-							/* switch style: "<prefix>Param Value" */
-							if ((i + 1) < args.Length) {
-								string @switch = cmdLineValue;
-								string val = args[i + 1];
-								onSwitchMatch(new CommandLineArgsMatchEventArgs(@switch, val));
-								arguments.Add(cmdLineValue, val);
+					string arg = Regex.Replace(option, optionPattern, "", RegexOptions.Compiled);
 
-								i++;
-							}
-							else {
-								onSwitchMatch(new CommandLineArgsMatchEventArgs(cmdLineValue, null));
-								arguments.Add(cmdLineValue, null);
-							}
-						}
+					if (arg.Contains("=")) {
+						/* switch style: "<prefix>Param=Value" */
+						int idx = arg.IndexOf('=');
+						string n = arg.Substring(0, idx);
+						string val = arg.Substring(idx + 1, arg.Length - n.Length - 1);
+						onSwitchMatch(new CommandLineArgsMatchEventArgs(n, val));
+						arguments.Add(n, val);
 					}
 					else {
-						/* invalid argument */
-						onSwitchMatch(new CommandLineArgsMatchEventArgs(InvalidSwitchIdentifier, cmdLineValue, false));
-						invalidArgs.Add(cmdLineValue);
+						/* switch style: "<prefix>Param Value" */
+						if ((i + 1) < args.Length) {
+							string @switch = arg;
+							string val = args[i + 1];
+							onSwitchMatch(new CommandLineArgsMatchEventArgs(@switch, val));
+							arguments.Add(arg, val);
+
+							i++;
+						}
+						else {
+							onSwitchMatch(new CommandLineArgsMatchEventArgs(arg, null));
+							arguments.Add(arg, null);
+						}
 					}
 				}
 			}
+		}
+
+		/// <summary>
+		///
+		/// </summary>
+		/// <param name="switchName"></param>
+		/// <returns></returns>
+		public bool HasHandler(string switchName) {
+			string scrubbed = string.Empty;
+			foreach (string prefix in prefixRegexPatternList) {
+				if (Regex.IsMatch(switchName, prefix, RegexOptions.Compiled)) {
+					scrubbed = Regex.Replace(switchName, prefix, "", RegexOptions.Compiled);
+					break;
+				}
+			}
+
+			if (ignoreCase) {
+				foreach (string key in arguments.Keys) {
+					if (key.ToLower() == switchName.ToLower()) {
+						return true;
+					}
+				}
+			}
+			else {
+				return handlers.ContainsKey(switchName);
+			}
+
+			return false;
 		}
 
 		/// <summary>
