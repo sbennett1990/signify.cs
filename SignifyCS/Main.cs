@@ -35,10 +35,14 @@ namespace SignifyCS {
 				cmd_args.PrefixRegexPatternList.Add("-{1}");
 
 				cmd_args.registerSpecificSwitchMatchHandler("p", (sender, e) => {
-					pub_key = readPubFile(e.Value);
+					using (FileStream pub_key_file = readFile(e.Value)) {
+						pub_key = PubKeyCryptoFile.ParsePubKeyFile(pub_key_file);
+					}
 				});
 				cmd_args.registerSpecificSwitchMatchHandler("x", (sender, e) => {
-					sig = readSigFile(e.Value);
+					using (FileStream sig_file = readFile(e.Value)) {
+						sig = SigCryptoFile.ParseSigFile(sig_file);
+					}
 				});
 				cmd_args.registerSpecificSwitchMatchHandler("m", (sender, e) => {
 					message = File.ReadAllBytes(e.Value);
@@ -65,46 +69,6 @@ namespace SignifyCS {
 			}
 
 			Console.WriteLine();
-		}
-
-		private static PubKey readPubFile(string file_name) {
-			PubKey pub_key;
-			string comment;
-			using (FileStream pub_key_file = readFile(file_name)) {
-				pub_key = PubKeyCryptoFile.ParsePubKeyFile(pub_key_file, out comment);
-			}
-#if DEBUG
-			Console.WriteLine($"Untrusted Comment: {comment}");
-			Console.Write("Base64 Key Num: ");
-			Array.ForEach(pub_key.KeyNum, x => Console.Write($"{x:x2}"));
-			Console.Write("\nBase64 PubKey Data: ");
-			Array.ForEach(pub_key.PubKeyData, x => Console.Write($"{x:x2}"));
-			Console.WriteLine();
-#endif
-			return pub_key;
-		}
-
-		private static Signature readSigFile(string file_name) {
-			Signature sig;
-			string comment;
-			using (FileStream sig_file = readFile(file_name)) {
-				sig = SigCryptoFile.ParseSigFile(sig_file, out comment);
-			}
-#if DEBUG
-			Console.WriteLine($"Untrusted Comment: {comment}");
-			Console.Write("Base64 Key Num: ");
-			Array.ForEach(sig.KeyNum, x => Console.Write($"{x:x2}"));
-			Console.Write("\nBase64 Sig Data: ");
-			Array.ForEach(sig.SigData, x => Console.Write($"{x:x2}"));
-			Console.WriteLine();
-#endif
-			return sig;
-		}
-
-		private static byte[] getMessage() {
-			Console.Write("Message: ");
-			string file_name = Console.ReadLine().Trim();
-			return File.ReadAllBytes(file_name);
 		}
 
 		private static FileStream readFile(string file_name) {
