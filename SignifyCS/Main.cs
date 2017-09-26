@@ -20,6 +20,8 @@ using libcmdline;
 
 namespace SignifyCS {
 	public class Signify {
+		public const string USAGE = "verify -p pubkey -x sigfile -m message";
+
 		public static void Main(string[] args) {
 			PubKey pub_key = default(PubKey);
 			Signature sig = default(Signature);
@@ -44,8 +46,8 @@ namespace SignifyCS {
 
 				cmd_args.ProcessCommandLineArgs(args);
 				if (cmd_args.ArgCount < 3) {
-					Console.WriteLine("usage: signify -p pubkey -x sigfile -m message");
-					throw new Exception();
+					Console.WriteLine("\nusage: " + USAGE);
+					return;
 				}
 
 				bool success = Verify.VerifyMessage(pub_key, sig, message);
