@@ -58,9 +58,9 @@ namespace SignifyCS {
 				bool success = Verify.VerifyMessage(pub_key, sig, message);
 
 				if (success) {
-					Console.WriteLine("\nSignature Verified");
+					Console.WriteLine("Signature Verified");
 				} else {
-					Console.WriteLine("\nsignature verification failed");
+					Console.WriteLine("signature verification failed");
 				}
 			} catch (Exception e) {
 				Console.WriteLine(e.Message);
@@ -68,10 +68,12 @@ namespace SignifyCS {
 				Console.WriteLine(e.StackTrace);
 #endif
 			}
+
+			Console.WriteLine();
 		}
 
 		private static void usage() {
-			Console.WriteLine("\nusage: " + USAGE);
+			Console.WriteLine($"usage: {USAGE}\n");
 		}
 
 		private static FileStream readFile(string file_name) {
