@@ -43,6 +43,7 @@ namespace SignifyCS {
 				cmd_args.RegisterSpecificSwitchMatchHandler("m", (sender, e) => {
 					message = File.ReadAllBytes(e.Value);
 				});
+				/* invalid arguments shouldn't be allowed to proceed */
 				cmd_args.RegisterSpecificSwitchMatchHandler(CommandLineArgs.InvalidSwitchIdentifier, (sender, e) => {
 					usage();
 					Environment.Exit(1);
