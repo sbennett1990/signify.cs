@@ -120,7 +120,7 @@ namespace libcmdline {
 		/// </summary>
 		/// <param name="switchName"></param>
 		/// <param name="handler"></param>
-		public void registerSpecificSwitchMatchHandler(
+		public void RegisterSpecificSwitchMatchHandler(
 			string switchName,
 			EventHandler<CommandLineArgsMatchEventArgs> handler
 		) {
@@ -136,7 +136,7 @@ namespace libcmdline {
 		/// Take the command line arguments and attempt to execute the handlers.
 		/// </summary>
 		/// <param name="args">The arguments array</param>
-		public void processCommandLineArgs(string[] args) {
+		public void ProcessCommandLineArgs(string[] args) {
 			for (int i = 0; i < args.Length; i++) {
 				string cmdLineValue = ignoreCase ? args[i].ToLower() : args[i];
 

@@ -34,21 +34,21 @@ namespace SignifyCS {
 				CommandLineArgs cmd_args = new CommandLineArgs();
 				cmd_args.PrefixRegexPatternList.Add("-{1}");
 
-				cmd_args.registerSpecificSwitchMatchHandler("p", (sender, e) => {
+				cmd_args.RegisterSpecificSwitchMatchHandler("p", (sender, e) => {
 					using (FileStream pub_key_file = readFile(e.Value)) {
 						pub_key = PubKeyCryptoFile.ParsePubKeyFile(pub_key_file);
 					}
 				});
-				cmd_args.registerSpecificSwitchMatchHandler("x", (sender, e) => {
+				cmd_args.RegisterSpecificSwitchMatchHandler("x", (sender, e) => {
 					using (FileStream sig_file = readFile(e.Value)) {
 						sig = SigCryptoFile.ParseSigFile(sig_file);
 					}
 				});
-				cmd_args.registerSpecificSwitchMatchHandler("m", (sender, e) => {
+				cmd_args.RegisterSpecificSwitchMatchHandler("m", (sender, e) => {
 					message = File.ReadAllBytes(e.Value);
 				});
 
-				cmd_args.processCommandLineArgs(args);
+				cmd_args.ProcessCommandLineArgs(args);
 				if (cmd_args.ArgCount < 3) {
 					Console.WriteLine("usage: signify -p pubkey -x sigfile -m message");
 					throw new Exception();
