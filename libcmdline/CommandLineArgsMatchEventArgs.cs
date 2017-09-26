@@ -31,9 +31,9 @@ namespace libcmdline {
 	/// Container for a command line switch and its value.
 	/// </summary>
 	public class CommandLineArgsMatchEventArgs : EventArgs {
-		string @switch;
-		string value;
-		bool isValidSwitch = true;
+		private string @switch;
+		private string value;
+		private bool isValidSwitch = true;
 
 		/// <summary>
 		/// The command line switch.

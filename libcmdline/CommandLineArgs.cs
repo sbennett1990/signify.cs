@@ -86,15 +86,6 @@ namespace libcmdline {
 		}
 
 		/// <summary>
-		///
-		/// </summary>
-		public IList<string> PrefixRegexPatternList {
-			get {
-				return prefixRegexPatternList;
-			}
-		}
-
-		/// <summary>
 		/// Ignore the case of the command line switches. Default is false.
 		/// </summary>
 		public bool IgnoreCase {
@@ -112,6 +103,15 @@ namespace libcmdline {
 		public IList<string> InvalidArgs {
 			get {
 				return invalidArgs;
+			}
+		}
+
+		/// <summary>
+		///
+		/// </summary>
+		public IList<string> PrefixRegexPatternList {
+			get {
+				return prefixRegexPatternList;
 			}
 		}
 
@@ -146,16 +146,16 @@ namespace libcmdline {
 					if (Regex.IsMatch(cmdLineValue, switchPattern, RegexOptions.Compiled)) {
 						cmdLineValue = Regex.Replace(cmdLineValue, switchPattern, "", RegexOptions.Compiled);
 
-						// switch style: "<prefix>Param=Value"
 						if (cmdLineValue.Contains("=")) {
+							/* switch style: "<prefix>Param=Value" */
 							int idx = cmdLineValue.IndexOf('=');
 							string n = cmdLineValue.Substring(0, idx);
 							string v = cmdLineValue.Substring(idx + 1, cmdLineValue.Length - n.Length - 1);
 							onSwitchMatch(new CommandLineArgsMatchEventArgs(n, v));
 							arguments.Add(n, v);
 						}
-						// switch style: "<prefix>Param Value"
 						else {
+							/* switch style: "<prefix>Param Value" */
 							if ((i + 1) < args.Length) {
 								string @switch = cmdLineValue;
 								string val = args[i + 1];
@@ -170,11 +170,11 @@ namespace libcmdline {
 							}
 						}
 					}
-					// invalid arg ...
-					//else {
-					//	onSwitchMatch(new CommandLineArgsMatchEventArgs(InvalidSwitchIdentifier, cmdLineValue, false));
-					//	invalidArgs.Add(cmdLineValue);
-					//}
+					else {
+						/* invalid argument */
+						onSwitchMatch(new CommandLineArgsMatchEventArgs(InvalidSwitchIdentifier, cmdLineValue, false));
+						invalidArgs.Add(cmdLineValue);
+					}
 				}
 			}
 		}
