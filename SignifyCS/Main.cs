@@ -43,11 +43,15 @@ namespace SignifyCS {
 				cmd_args.RegisterSpecificSwitchMatchHandler("m", (sender, e) => {
 					message = File.ReadAllBytes(e.Value);
 				});
+				cmd_args.RegisterSpecificSwitchMatchHandler(CommandLineArgs.InvalidSwitchIdentifier, (sender, e) => {
+					usage();
+					Environment.Exit(1);
+				});
 
 				cmd_args.ProcessCommandLineArgs(args);
 				if (cmd_args.ArgCount < 3) {
-					Console.WriteLine("\nusage: " + USAGE);
-					return;
+					usage();
+					Environment.Exit(1);
 				}
 
 				bool success = Verify.VerifyMessage(pub_key, sig, message);
@@ -63,6 +67,10 @@ namespace SignifyCS {
 				Console.WriteLine(e.StackTrace);
 #endif
 			}
+		}
+
+		private static void usage() {
+			Console.WriteLine("\nusage: " + USAGE);
 		}
 
 		private static FileStream readFile(string file_name) {
