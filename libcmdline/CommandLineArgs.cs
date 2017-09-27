@@ -143,45 +143,42 @@ namespace libcmdline {
 		public void ProcessCommandLineArgs(string[] args) {
 			for (int i = 0; i < args.Length; i++) {
 				string option = ignoreCase ? args[i].ToLower() : args[i];
+				string optionPattern = matchOptionPattern(option);
 
-				foreach (string prefix in prefixRegexPatternList) {
-					string optionPattern = string.Format("^{0}", prefix);
+				if (string.IsNullOrEmpty(optionPattern)) {
+					continue;
+				}
 
-					if (!Regex.IsMatch(option, optionPattern, RegexOptions.Compiled)) {
-						continue;
-					}
+				string arg = Regex.Replace(option, optionPattern, "", RegexOptions.Compiled);
 
-					string arg = Regex.Replace(option, optionPattern, "", RegexOptions.Compiled);
+				if (!handlers.ContainsKey(arg)) {
+					/* invalid argument */
+					onSwitchMatch(new CommandLineArgsMatchEventArgs(InvalidSwitchIdentifier, arg, false));
+					invalidArgs.Add(arg);
+					continue;
+				}
 
-					if (!handlers.ContainsKey(arg)) {
-						/* invalid argument */
-						onSwitchMatch(new CommandLineArgsMatchEventArgs(InvalidSwitchIdentifier, arg, false));
-						invalidArgs.Add(arg);
-						continue;
-					}
+				if (arg.Contains("=")) {
+					/* switch style: "<prefix>Param=Value" */
+					int idx = arg.IndexOf('=');
+					string n = arg.Substring(0, idx);
+					string val = arg.Substring(idx + 1, arg.Length - n.Length - 1);
+					onSwitchMatch(new CommandLineArgsMatchEventArgs(n, val));
+					arguments.Add(n, val);
+				}
+				else {
+					/* switch style: "<prefix>Param Value" */
+					if ((i + 1) < args.Length) {
+						string @switch = arg;
+						string val = args[i + 1];
+						onSwitchMatch(new CommandLineArgsMatchEventArgs(@switch, val));
+						arguments.Add(arg, val);
 
-					if (arg.Contains("=")) {
-						/* switch style: "<prefix>Param=Value" */
-						int idx = arg.IndexOf('=');
-						string n = arg.Substring(0, idx);
-						string val = arg.Substring(idx + 1, arg.Length - n.Length - 1);
-						onSwitchMatch(new CommandLineArgsMatchEventArgs(n, val));
-						arguments.Add(n, val);
+						i++;
 					}
 					else {
-						/* switch style: "<prefix>Param Value" */
-						if ((i + 1) < args.Length) {
-							string @switch = arg;
-							string val = args[i + 1];
-							onSwitchMatch(new CommandLineArgsMatchEventArgs(@switch, val));
-							arguments.Add(arg, val);
-
-							i++;
-						}
-						else {
-							onSwitchMatch(new CommandLineArgsMatchEventArgs(arg, null));
-							arguments.Add(arg, null);
-						}
+						onSwitchMatch(new CommandLineArgsMatchEventArgs(arg, null));
+						arguments.Add(arg, null);
 					}
 				}
 			}
@@ -227,6 +224,22 @@ namespace libcmdline {
 			else if (SwitchMatch != null) {
 				SwitchMatch(this, e);
 			}
+		}
+
+		/// <summary>
+		///
+		/// </summary>
+		/// <param name="option"></param>
+		private string matchOptionPattern(string option) {
+			foreach (string prefix in prefixRegexPatternList) {
+				string optionPattern = string.Format("^{0}", prefix);
+
+				if (Regex.IsMatch(option, optionPattern, RegexOptions.Compiled)) {
+					return optionPattern;
+				}
+			}
+
+			return string.Empty;
 		}
 	}
 }

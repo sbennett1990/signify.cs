@@ -50,6 +50,7 @@ namespace SignifyCS {
 				});
 
 				cmd_args.ProcessCommandLineArgs(args);
+
 				if (cmd_args.ArgCount < 3) {
 					usage();
 					Environment.Exit(1);
