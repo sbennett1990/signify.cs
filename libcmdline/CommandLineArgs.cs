@@ -227,12 +227,14 @@ namespace libcmdline {
 		}
 
 		/// <summary>
-		///
+		/// Match the given option flag (which should be taken directly from the
+		/// command line) against valid switch prefixes. Returns the pattern
+		/// used by the given option flag, or the empty string if it does not match.
 		/// </summary>
 		/// <param name="option"></param>
 		private string matchOptionPattern(string option) {
 			foreach (string prefix in prefixRegexPatternList) {
-				string optionPattern = string.Format("^{0}", prefix);
+				string optionPattern = $"^{prefix}";
 
 				if (Regex.IsMatch(option, optionPattern, RegexOptions.Compiled)) {
 					return optionPattern;
