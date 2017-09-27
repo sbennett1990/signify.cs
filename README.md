@@ -1,9 +1,9 @@
-# SignifyCS - A signify(1)-like tool written in C#
+# SignifyCS - A [signify(1)][signify]-like tool written in C#
 
-**SignifyCS** is capable of verifying files (messages) signed with signify(1).
-At this time, it can't verify files signed with the embedded (`-e`) flag, nor
-gzip files signed with the `-z` flag. It does not implement any of key generation
-or message signing functionalities.
+**SignifyCS** is capable of verifying files (messages) signed with
+[signify(1)][signify]. At this time, it can't verify files signed with the
+embedded (`-e`) flag, nor gzip files signed with the `-z` flag. It does not
+implement any of key generation or message signing functionalities.
 
 This is a command line tool (i.e. Console application) - there is no GUI. As
 such, for best results run within PowerShell. It also works in Cygwin and
@@ -54,3 +54,6 @@ ISC licensed
 
 * https://www.tedunangst.com/flak/post/signify
 * https://www.openbsd.org/papers/bsdcan-signify.html
+
+
+[signify]: http://man.openbsd.org/signify
