@@ -28,23 +28,23 @@ namespace SignifyCS {
 			byte[] message = new byte[0];
 
 			try {
-				CommandLineArgs cmd_args = new CommandLineArgs();
+				CommandLineProcessor cmd_args = new CommandLineProcessor();
 
-				cmd_args.RegisterSpecificSwitchMatchHandler("p", (sender, e) => {
-					using (FileStream pub_key_file = readFile(e.Value)) {
+				cmd_args.RegisterOptionMatchHandler("p", (sender, e) => {
+					using (FileStream pub_key_file = readFile(e.Argument)) {
 						pub_key = PubKeyCryptoFile.ParsePubKeyFile(pub_key_file);
 					}
 				});
-				cmd_args.RegisterSpecificSwitchMatchHandler("x", (sender, e) => {
-					using (FileStream sig_file = readFile(e.Value)) {
+				cmd_args.RegisterOptionMatchHandler("x", (sender, e) => {
+					using (FileStream sig_file = readFile(e.Argument)) {
 						sig = SigCryptoFile.ParseSigFile(sig_file);
 					}
 				});
-				cmd_args.RegisterSpecificSwitchMatchHandler("m", (sender, e) => {
-					message = File.ReadAllBytes(e.Value);
+				cmd_args.RegisterOptionMatchHandler("m", (sender, e) => {
+					message = File.ReadAllBytes(e.Argument);
 				});
 				/* invalid arguments shouldn't be allowed to proceed */
-				cmd_args.RegisterSpecificSwitchMatchHandler(CommandLineArgs.InvalidSwitchIdentifier, (sender, e) => {
+				cmd_args.RegisterOptionMatchHandler(CommandLineProcessor.Invalid, (sender, e) => {
 					usage();
 					Environment.Exit(1);
 				});
