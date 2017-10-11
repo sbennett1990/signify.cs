@@ -6,18 +6,18 @@ embedded (`-e`) flag, nor gzip files signed with the `-z` flag. It does not
 implement any of key generation or message signing functionalities.
 
 This is a command line tool (i.e. Console application) - there is no GUI. As
-such, for best results run within PowerShell. It also works in Cygwin and
+such, run within PowerShell for best results. It also works in Cygwin and
 Command Prompt environments. "Double-clicking" the `.exe` will appear to do
 nothing, since the program requires command line arguments, and fails without
 them.
 
 ## Usage
 
-`verify.exe -p pubkey -x sigfile -m messagefile`
+`PS> verify.exe -p pubkey -x sigfile -m messagefile`
 
 Alternate:
 
-`verify.exe /p pubkey /x sigfile /m messagefile`
+`PS> verify.exe /p pubkey /x sigfile /m messagefile`
 
 **Note**: the **SignifyCS** binary is called `verify.exe` since it can only
 verify. All flags are required, but **SignifyCS** can accept flags prefixed with
@@ -42,7 +42,7 @@ verify. All flags are required, but **SignifyCS** can accept flags prefixed with
 
 ## License
 
-ISC licensed
+ISC licensed. See [LICENSE](https://raw.githubusercontent.com/sbennett1990/signify.cs/master/LICENSE) file.
 
 ## Resources
 
