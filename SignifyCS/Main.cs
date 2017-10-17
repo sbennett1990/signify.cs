@@ -30,17 +30,17 @@ namespace SignifyCS {
 			try {
 				CommandLineProcessor cmd_args = new CommandLineProcessor();
 
-				cmd_args.RegisterOptionMatchHandler("p", (sender, e) => {
+				cmd_args.RegisterOptionMatchHandler("p", true, (sender, e) => {
 					using (FileStream pub_key_file = readFile(e.Argument)) {
 						pub_key = PubKeyCryptoFile.ParsePubKeyFile(pub_key_file);
 					}
 				});
-				cmd_args.RegisterOptionMatchHandler("x", (sender, e) => {
+				cmd_args.RegisterOptionMatchHandler("x", true, (sender, e) => {
 					using (FileStream sig_file = readFile(e.Argument)) {
 						sig = SigCryptoFile.ParseSigFile(sig_file);
 					}
 				});
-				cmd_args.RegisterOptionMatchHandler("m", (sender, e) => {
+				cmd_args.RegisterOptionMatchHandler("m", true, (sender, e) => {
 					message = File.ReadAllBytes(e.Argument);
 				});
 				/* invalid arguments shouldn't be allowed to proceed */
