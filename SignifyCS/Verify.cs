@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Diagnostics;
 
 using Sodium;
 
@@ -43,6 +44,16 @@ namespace SignifyCS {
 
 		private static bool verifyCrypto(Signature sig, byte[] message, PubKey pub_key) {
 			return PublicKeyAuth.VerifyDetached(sig.SigData, message, pub_key.PubKeyData);
+		}
+
+		[Conditional("TEST")]
+		public static void CheckAlgorithms(PubKey pub_key, Signature sig) {
+			checkAlgorithms(pub_key, sig);
+		}
+
+		[Conditional("TEST")]
+		public static void CheckKeys(PubKey pub_key, Signature sig) {
+			checkKeys(pub_key, sig);
 		}
 	}
 }
