@@ -21,12 +21,12 @@ using Sodium;
 namespace SignifyCS {
 	public class Verify {
 		public static bool VerifyMessage(PubKey pub_key, Signature sig, byte[] message) {
-			CheckAlgorithms(pub_key, sig);
-			CheckKeys(pub_key, sig);
-			return VerifyCrypto(sig, message, pub_key);
+			checkAlgorithms(pub_key, sig);
+			checkKeys(pub_key, sig);
+			return verifyCrypto(sig, message, pub_key);
 		}
 
-		public static void CheckAlgorithms(PubKey pub_key, Signature sig) {
+		private static void checkAlgorithms(PubKey pub_key, Signature sig) {
 			if (!pub_key.Algorithm.Equals(BaseCryptoFile.PK_ALGORITHM)) {
 				throw new Exception($"unsupported public key; unexpected algorithm '{pub_key.Algorithm}'");
 			}
@@ -35,13 +35,13 @@ namespace SignifyCS {
 			}
 		}
 
-		public static void CheckKeys(PubKey pub_key, Signature sig) {
+		private static void checkKeys(PubKey pub_key, Signature sig) {
 			if (!CryptoBytes.ConstantTimeEquals(pub_key.KeyNum, sig.KeyNum)) {
 				throw new Exception("verification failed: checked against wrong key");
 			}
 		}
 
-		public static bool VerifyCrypto(Signature sig, byte[] message, PubKey pub_key) {
+		private static bool verifyCrypto(Signature sig, byte[] message, PubKey pub_key) {
 			return PublicKeyAuth.VerifyDetached(sig.SigData, message, pub_key.PubKeyData);
 		}
 	}
