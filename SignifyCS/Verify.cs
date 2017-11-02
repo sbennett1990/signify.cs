@@ -24,7 +24,7 @@ namespace SignifyCS {
 		public static bool VerifyMessage(PubKey pub_key, Signature sig, byte[] message) {
 			checkAlgorithms(pub_key, sig);
 			checkKeys(pub_key, sig);
-			return verifyCrypto(sig, message, pub_key);
+			return PublicKeyAuth.VerifyDetached(sig.SigData, message, pub_key.PubKeyData);
 		}
 
 		private static void checkAlgorithms(PubKey pub_key, Signature sig) {
@@ -40,10 +40,6 @@ namespace SignifyCS {
 			if (!CryptoBytes.ConstantTimeEquals(pub_key.KeyNum, sig.KeyNum)) {
 				throw new Exception("verification failed: checked against wrong key");
 			}
-		}
-
-		private static bool verifyCrypto(Signature sig, byte[] message, PubKey pub_key) {
-			return PublicKeyAuth.VerifyDetached(sig.SigData, message, pub_key.PubKeyData);
 		}
 
 		[Conditional("TEST")]
